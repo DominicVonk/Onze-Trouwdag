@@ -1,0 +1,125 @@
+{% extends 'layouts/main.twig' %}
+{% block title %}
+{{code.name|raw}} - Onze Trouwdag
+{% endblock %}
+{% block description %}Persoonlijke link (niet delen){% endblock %}
+{% block body %}
+    <div class="logo small">
+        <img src="/static/img/logo.png" width="256">
+    </div>
+    <div class="welcome">[dag] {{ code.name|raw }},
+Welkom op onze website! 🥰
+Hier {{'vind'|m}} {{'je'|m}} alles over onze trouwdag.
+Een van de mooiste dagen uit ons leven.
+Bedankt dat jullie er waren.</div>
+    <div class="cards">
+        <!--<div class="card" data-trigger="modal/aanwezigheid">
+            <i class="fal fa-calendar-check"></i>
+            Kom&nbsp;je&nbsp;ook? 
+        </div>-->
+        <div class="card" data-trigger="modal/locatie">
+            <i class="fal fa-map-marker-alt"></i>
+            Onze&nbsp;trouwlocatie
+        </div>
+        <div class="card" data-trigger="modal/onze-dag">
+            <i class="fal fa-rings-wedding"></i>
+            Het&nbsp;programma
+        </div>
+        <div class="card disabled" data-trigger="modal/fotos">
+            <i class="fal fa-image"></i>
+            Foto’s
+        </div>
+        <div class="card"  data-trigger="modal/cadeautips">
+            <i class="fal fa-gift"></i>
+            Cadeautip
+        </div>
+        <div class="card"  data-trigger="modal/ons-adres">
+            <i class="fal fa-address-card"></i>
+            Ons adres
+        </div>
+    </div>
+    <div class="modal" id="aanwezigheid" data-on-close="aanwezigheidSluiten" data-on-open="aanwezigheid">
+        <div class="modal__body">
+            <h2>Kom je ook?</h2>
+            
+            <div class="chat">
+                <div class="messages">
+
+                </div>
+                <div class="options">
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    <div class="modal" id="locatie">
+        <div class="modal__body">
+            <h2>Onze trouwlocatie</h2>
+            
+            <p>Wij trouwen in 'De Hipper' aan de Torenstraat 1A (4201 GS) in Gorinchem.</p>
+            
+            <h3>Parkeren</h3>
+            
+            <p>Parkeergarage Kazerneplein (Pompstraat 27, 4201 HB) bevindt zich op loopafstand van de trouwlocatie. Je parkeert hier tussen 10.00 en 17.00 uur voor €1,20 per uur. Na 17.00 uur is parkeren hier gratis. </p>
+        </div>
+    </div>
+
+    <div class="modal" id="ons-adres">
+        <div class="modal__body">
+            <h2>Ons adres</h2>
+            
+            <p>Loudonstraat 271<br>3317 PE Dordrecht</p>
+              </div>
+    </div>
+
+    <div class="modal" id="onze-dag">
+        <div class="modal__body">
+        <h2>Het programma</h2>
+            <p>We vieren de hele trouwdag op één locatie: <a href="https://www.hipper.nl/" target="_blank">'De Hipper'</a> in Gorinchem. Het programma is als volgt 👉🏻</p>
+
+
+<div class="gallery">
+    <div><img src="/static/img/zaal2.jpg"></div>
+    <div><img src="/static/img/tuin1.jpg"></div>
+    <div><img src="/static/img/zaal1.jpg"></div>
+</div>
+
+<p>Met de daggasten<p>
+<ul>
+<li>De huwelijksceremonie 👰🏼🤵🏼 </li>
+<li>Aansnijden bruidstaart en toost 🍰 🥂  </li>
+<li>Picture time 📸 </li>
+<li>Het diner 🍴</li>
+</ul>
+<p>Met de avondgasten<p>
+<li>20.00 Party, drinks & bites 'till the lights go out! 💃🏼 🕺🏼</li>
+<li>00.30 Start van ons huwelijksweekend 🙋🏼‍♀️ 🙋🏼‍♂️  </li>
+</ul>
+
+        </div>
+    </div>
+
+    <div class="modal" id="fotos">
+        <div class="modal__body">
+            <h2>Foto’s</h2>
+            <p>Op de linkjes hieronder  kun je onze trouwdag terugkijken en de dag opnieuw beleven, van begin tot eind.</p>
+            <p><a href="/photos/day" target="_blank">Dagfoto's</a><p>
+            <p><a href="/photos/group" target="_blank">Groepsfoto's</a><p>
+            <p><a href="/photos/party" target="_blank">Foto's van het feest</a><p>
+            <p><a href="/photos/booth" target="_blank">Foto's van de photobooth</a><p>
+            <!--
+            <p>Bewaar de inlogcode die je van ons gehad hebt goed. Hiermee kun je later de foto's van onze trouwdag terugkijken en de dag opnieuw beleven, van begin tot eind. </p>-->
+        </div>
+    </div>
+    
+    <div class="modal" id="cadeautips">
+        <img class="modal__body transparent" width="551" src="/static/img/cadeautip.png">
+    </div>
+
+
+
+<script>
+var code = {{code_json|raw}};
+</script>
+{% endblock %}

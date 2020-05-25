@@ -1,0 +1,83 @@
+@keyframes modalIn {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-50%) scale(0.5);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-50%) scale(1);
+  }
+}
+@keyframes modalInMobile {
+  0% {
+    opacity: 0;
+    -webkit-transform: translateX(-50%) scale(0.5);
+    transform: translateX(-50%) scale(0.5);
+  }
+  to {
+    opacity: 1;
+    -webkit-transform: translateX(-50%) scale(1);
+    transform: translateX(-50%) scale(1);
+  }
+}
+@keyframes modalBGIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}
+.modal {
+  display: none;
+  &.show {
+    display: block;
+  }
+  &:before {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    animation: modalBGIn 500ms ease forwards;
+    right: 0;
+    content: "";
+    opacity: 0;
+    display: block;
+    background-color: #000;
+  }
+  &:after {
+    position: absolute;
+    right: 16px;
+    top: 16px;
+    content: "\f00d";
+    font-family: "Font awesome 5 Pro";
+    font-weight: 300;
+    font-size: 32px;
+    color: #fff;
+    z-index: 1000;
+  }
+  .modal__body {
+    max-width: 100%;
+    width: 680px;
+    position: absolute;
+    animation: modalIn 500ms 150ms ease forwards;
+    top: 50vh;
+    padding: 24px;
+    left: 50%;
+    opacity: 0;
+    background: #fff;
+    color: var(--color-body);
+    border-radius: 4px;
+    @media screen and (max-width: 960px) {
+      top: 64px;
+      width: calc(100vw - 16px);
+      animation: modalInMobile 0.5s ease 0.15s forwards;
+    }
+    &.transparent {
+      border-radius: 0;
+      background: transparent;
+      padding: 0;
+      max-width: 90%;
+    }
+  }
+}

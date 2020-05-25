@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8"/>
+        <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+        <meta content="ie=edge" http-equiv="X-UA-Compatible"/>
+        <title>Document</title>
+        <link href="https://fonts.googleapis.com/css?family=Nunito:400,400i,700,700i&display=swap" rel="stylesheet">
+        <link crossorigin="anonymous" href="https://pro.fontawesome.com/releases/v5.9.0/css/all.css" integrity="sha384-vlOMx0hKjUCl4WzuhIhSNZSm2yQCaf0mOU1hEDK/iztH3gU4v5NMmJln9273A6Jz" rel="stylesheet">
+        <style>
+            *,
+            *:before,
+            *:after {
+                box-sizing: border-box;
+                margin: 0;
+            }
+            body {
+                padding: 16px;
+                font-family: 'Nunito', sans-serif;
+            }
+            table {
+                border-collapse: collapse;
+            }
+            
+            table td, table th {
+                white-space: nowrap;
+                padding: 8px;
+                border: 1px solid #ccc;
+            }
+            table td:nth-child(n+3) {
+                text-align: center;
+            }
+            table tr td {
+                background-color: #fff;
+            }
+            table tr:nth-child(2n) td {
+                background-color: #eee;
+            }
+            .fa-check {
+                color: #08ad1e;
+            }
+            .fa-times {
+                color: #ad0707;
+            }
+            a {
+                color: #0786ad;
+                text-decoration: none;
+            }
+            table thead th, table tfoot td {
+                font-weight: bold;
+                background-color: #bbb;
+                color: #fff;
+            }
+        </style>
+    </head>
+    <body>
+
+            <a href="/CAPSKDHR/">Toon alle gasten</a>&nbsp;&nbsp;&nbsp;
+            <a href="/CAPSKDHR/1">Toon avondgasten</a>&nbsp;&nbsp;&nbsp;
+            <a href="/CAPSKDHR/2">Toon overdaggasten</a><br><br>
+             {% if day == 0 %}
+             <h2>Alle gasten</h2>
+             {% elseif day == 1 %}
+             <h2>Avondgasten</h2>
+             {% else %}
+             <h2>Overdaggasten</h2>
+            {% endif %}
+        <div class="container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Naam</th>
+                        <th>Code</th>
+                        <th>Volwassenen</th>
+                        <th>Kinderen</th>
+                        <th>Aanwezigheid</th>
+                        <th>Type gast</th>
+                        <th>Visits</th>
+                                <th>
+                                <a href="/CAPSKDHR/create"><i class="fas fa-user-plus"></i></a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for code in codes %}
+                        <tr>
+                            <td>{{ code.internal_name }}</td>
+                            <td>{{ code.code }}</td>
+                            <td>{{ code.adults }}</td>
+                            <td>{{ code.children }}</td>
+                            <td>
+                                {% if code.status == 1 %}
+                                    <i class="fas fa-check">
+                                {% elseif code.status == 2 %}
+                                    <i class="fas fa-times">
+                                {% elseif code.status == 0 %}
+                                    <i class="fal fa-minus">
+                                {% endif %}
+
+                            </td>
+                            <td>
+                                {% if code.type == 0 %}
+                                    Avondgast
+                                {% elseif code.type == 2 %}
+                                    Middaggast
+                                {% elseif code.type == 1 %}
+                                    Daggast
+                                {% endif %}
+
+                            </td>
+                            <td>{{ code.visits }}</td>
+                                <td>
+                                <a href="/CAPSKDHR/edit/{{code.id}}"><i class="fas fa-user-edit"></i></a></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td>Totaal ({{codes|length}})</td>
+                            <td>&nbsp;</td>
+                            <td>{{ adults }}</td>
+                            <td>{{ children }}</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        
+    </body>
+</html>

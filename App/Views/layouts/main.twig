@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>{% block title %}Onze trouwdag{% endblock %}</title>
+        <meta name="description" content="{% block description %}{% endblock %}">
+        <meta name="og:image" content="https://onze-trouwdag.nl/static/img/ogimage.png">
+        <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.9.0/css/all.css" integrity="sha384-vlOMx0hKjUCl4WzuhIhSNZSm2yQCaf0mOU1hEDK/iztH3gU4v5NMmJln9273A6Jz" crossorigin="anonymous">
+        <link href="/static/css/main.css" rel="stylesheet" type="text/css">
+    </head>
+    <body>
+        {% block body %}{% endblock %}
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.2/TweenMax.min.js"></script>
+        <script src="/static/js/main.js" type="text/javascript"></script>
+    </body>
+</html>

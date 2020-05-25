@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Onze trouwfotos</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.12/dist/css/lightgallery.min.css">
+    <style>
+    * {
+        box-sizing: border-box;
+        padding: 0;
+        margin: 0;
+    }
+    body, html {
+        height: 100vh;
+        width: 100vw;
+        overflow: hidden;
+    }
+    body {
+        font-family: system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans",
+    "Droid Sans", "Helvetica Neue", sans-serif;
+    }
+    .lg-close { display: none; }</style>
+</head>
+<body>
+
+<div id="lightgallery">
+{% for photo in photos %} 
+  <a href="{{ photo }}">
+      <img src="{{ photo}}" />
+  </a>
+{% endfor %}
+</div>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.12/dist/js/lightgallery-all.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $lg = $('#lightgallery');
+
+        $lg.lightGallery({
+            thumbnail:true,
+            share: false,
+            closable: false,
+            mousewheel: false,
+            pause: 2500,
+            preload: 3,
+            loop: false
+        });
+        $lg.children().first().click();
+
+    });
+</script>
+</body>
+</html>
