@@ -182,7 +182,7 @@ window.aanwezigheid = async function (force) {
   options = await chat.options({ Ja: true, Nee: false });
   chat.write(
     options
-      ? " Geweldig. 😊 Neem je nog andere volwassenen of kinderen vanaf 12 jaar mee? "
+      ? " Geweldig. 😊 Met hoeveel volwassenen kom je? "
       : "Jammer dat jullie niet kunnen komen. Mocht dit nog veranderen, dan kun je dit vóór " +
         datum +
         " via deze pagina doorgeven. PS Neem later nog eens een kijkje op onze website voor de foto's!",
@@ -193,7 +193,15 @@ window.aanwezigheid = async function (force) {
     return;
   }
   let volwassene = await chat.options([
-    ["Nee", 1],
+    ["Alleen", 1],
+    [2, 2],
+    [3, 3],
+    [4, 4],
+    [5, 5],
+  ]);
+  chat.write("En kom je met kinderen boven de 12 jaar?");
+  volwassene += await chat.options([
+    ["Nee", 0],
     [1, 2],
     [2, 3],
     [3, 4],
