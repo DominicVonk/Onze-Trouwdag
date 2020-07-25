@@ -148,7 +148,9 @@ window.aanwezigheid = async function (force) {
         : "je komt";
       chat.write(
         `Leuk dat ${jullieofje}. Wij rekenen op ` +
-          ((code.adults == 1 ? "1 volwassene" : code.adults + " volwassenen") +
+          ((code.adults == 1
+            ? "1 volwassene"
+            : code.adults + " volwassenen en/of kinderen boven de 12 jaar") +
             (code.children > 0
               ? " en " +
                 (code.children == 1 ? "1 kind" : code.children + " kinderen")
@@ -221,7 +223,9 @@ window.aanwezigheid = async function (force) {
 
   chat.write(
     `Leuk dat ${jullieofje}. Wij rekenen op ` +
-      ((volwassene == 1 ? "1 volwassene" : volwassene + " volwassenen") +
+      ((volwassene == 1
+        ? "1 volwassene"
+        : volwassene + " volwassenen en/of kinderen boven de 12 jaar") +
         (kinderen > 0
           ? " en " + (kinderen == 1 ? "1 kind" : kinderen + " kinderen")
           : "")) +
