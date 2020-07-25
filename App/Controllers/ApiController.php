@@ -82,16 +82,12 @@ class ApiController extends \DraftMVC\DraftController
 
         $ch = curl_init();
 
-        curl_setopt($ch, CURLOPT_URL, 'https://api.pushback.io/v1/send');
+        curl_setopt($ch, CURLOPT_URL, 'https://maker.ifttt.com/trigger/subscription/with/key/ctg_Uu6Q9upXnd_Yzft8Oy');
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(array(
-            "id" => "Channel_1149",
-            "title" => "Onze-Trouwdag",
-            "body" => ($code->internal_name ?: $code->name) . ' heeft zich ' . ($code->status === 1 ? 'aangemeld' : 'afgemeld') . '.'
+            "value1" => ($code->internal_name ?: $code->name) . ' heeft zich ' . ($code->status === 1 ? 'aangemeld' : 'afgemeld') . '.'
         )));
-        curl_setopt($ch, CURLOPT_USERPWD, 'at_2OIfjk9uTSP1bLFOH4Aymg' . ':' . '');
-
         $headers = array();
         $headers[] = 'Content-Type: application/json';
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
