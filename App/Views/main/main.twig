@@ -1,125 +1,181 @@
 {% extends 'layouts/main.twig' %}
 {% block title %}
-{{code.name|raw}} - Onze Trouwdag
+	{{code.name|raw}}
+	- Onze Trouwdag
 {% endblock %}
-{% block description %}Persoonlijke link (niet delen){% endblock %}
+{% block description %}Persoonlijke link (niet delen)
+{% endblock %}
 {% block body %}
-    <div class="logo small">
-        <img src="/static/img/logo.png" width="256">
-    </div>
-    <div class="welcome">[dag]{{' '}}{{ code.name|raw }},
-Welkom op onze website! 🥰
-Hier{{' '}}{{'vind'|m}}{{' '}}{{'je'|m}}{{' '}}alles over onze trouwdag.
-Een van de mooiste dagen uit ons leven.
-Bedankt dat jullie er waren.</div>
-    <div class="cards">
-        <!--<div class="card" data-trigger="modal/aanwezigheid">
-            <i class="fal fa-calendar-check"></i>
-            Kom&nbsp;je&nbsp;ook? 
-        </div>-->
-        <div class="card" data-trigger="modal/locatie">
-            <i class="fal fa-map-marker-alt"></i>
-            Onze&nbsp;trouwlocatie
-        </div>
-        <div class="card" data-trigger="modal/onze-dag">
-            <i class="fal fa-rings-wedding"></i>
-            Het&nbsp;programma
-        </div>
-        <div class="card disabled" data-trigger="modal/fotos">
-            <i class="fal fa-image"></i>
-            Foto’s
-        </div>
-        <div class="card"  data-trigger="modal/cadeautips">
-            <i class="fal fa-gift"></i>
-            Cadeautip
-        </div>
-        <div class="card"  data-trigger="modal/ons-adres">
-            <i class="fal fa-address-card"></i>
-            Ons adres
-        </div>
-    </div>
-    <div class="modal" id="aanwezigheid" data-on-close="aanwezigheidSluiten" data-on-open="aanwezigheid">
-        <div class="modal__body">
-            <h2>Kom je ook?</h2>
-            
-            <div class="chat">
-                <div class="messages">
+	<div class="logo small">
+		<img src="{{account.logo_path}}" width="256">
+	</div>
+	<div class="welcome">{{ account.main_text|replace({'[name]': code.name|raw}) }}</div>
+	<div class="cards">
+		{% if formsubscription or formmaybeopen %}
+			<div class="card" data-trigger="modal/aanwezigheid">
+				<i class="fal fa-calendar-check"></i>
+				Kom&nbsp;je&nbsp;ook?
+			</div>
+		{% endif %}
+		{% if account.our_wedding_day <= 1 or (account.our_wedding_day == 2 and (code.type == 1 or code.type == 2)) or (account.our_wedding_day == 3 and code.type == 0) %}
+			<div class="card" data-trigger="modal/locatie">
+				<i class="fal fa-map-marker-alt"></i>
+				Onze&nbsp;trouwlocatie
+			</div>
+		{% endif %}
+		{% if account.our_program_button <= 1 or (account.our_program_button == 2 and  (code.type == 1 or code.type == 2)) or (account.our_program_button == 3 and code.type == 0) %}
+			<div class="card" data-trigger="modal/onze-dag">
+				<i class="fal fa-rings-wedding"></i>
+				Het&nbsp;programma
+			</div>
+		{% endif %}
+		<div class="card {% if account.photos != 1 %}disabled{% endif %}" data-trigger="modal/fotos">
+			<i class="fal fa-image"></i>
+			Foto’s
+		</div>
+		<div class="card" data-trigger="modal/cadeautips">
+			<i class="fal fa-gift"></i>
+			Cadeautip
+		</div>
+		<div class="card" data-trigger="modal/ons-adres">
+			<i class="fal fa-address-card"></i>
+			Ons adres
+		</div>
+	</div>
+	{% if formsubscription %}
+		<div class="modal" id="aanwezigheid" data-on-close="aanwezigheidSluiten" data-on-open="aanwezigheid">
+			<div class="modal__body">
+				<h2>Kom je ook?</h2>
 
-                </div>
-                <div class="options">
+				<div class="chat">
+					<div class="messages"></div>
+					<div class="options"></div>
+				</div>
 
-                </div>
-            </div>
-            
-        </div>
-    </div>
-    <div class="modal" id="locatie">
-        <div class="modal__body">
-            <h2>Onze trouwlocatie</h2>
-            
-            <p>Wij trouwen in 'De Hipper' aan de Torenstraat 1A (4201 GS) in Gorinchem.</p>
-            
-            <h3>Parkeren</h3>
-            
-            <p>Parkeergarage Kazerneplein (Pompstraat 27, 4201 HB) bevindt zich op loopafstand van de trouwlocatie. Je parkeert hier tussen 10.00 en 17.00 uur voor €1,20 per uur. Na 17.00 uur is parkeren hier gratis. </p>
-        </div>
-    </div>
+			</div>
+		</div>
+	{% elseif formmaybeopen %}
+		<div class="modal" id="aanwezigheid">
+			<div class="modal__body">
+				<h2>Kom je ook?</h2>
 
-    <div class="modal" id="ons-adres">
-        <div class="modal__body">
-            <h2>Ons adres</h2>
-            
-            <p>Loudonstraat 271<br>3317 PE Dordrecht</p>
-              </div>
-    </div>
+				<p>Het is niet meer mogelijk op je status te veranderen via we website.</p>
+				<p>
+					<h3>Neem contact met ons</h3>
+				</p>
+				<p>Als je niet meer kunt komen, zou je dan contact met ons kunnen opnemen?</p>
+				<p>Of als je toch nog wel wilt komen? Dan kunnen wij kijken wat er nog mogelijk is.</p>
 
-    <div class="modal" id="onze-dag">
-        <div class="modal__body">
-        <h2>Het programma</h2>
-            <p>We vieren de hele trouwdag op één locatie: <a href="https://www.hipper.nl/" target="_blank">'De Hipper'</a> in Gorinchem. Het programma is als volgt 👉🏻</p>
+			</div>
+		</div>
+	{% endif %}
+	<div class="modal" id="locatie">
+		<div class="modal__body">
+			<h2>Onze trouwlocatie</h2>
+			{{account.location_text|raw}}
+			{#
+																																																									<p>Wij trouwen in 'De Hipper' aan de Torenstraat 1A (4201 GS) in Gorinchem.</p>
+																																																						
+																																																									<h3>Parkeren</h3>
+																																																						
+																																																									<p>Parkeergarage Kazerneplein (Pompstraat 27, 4201 HB) bevindt zich op loopafstand van de trouwlocatie. Je parkeert hier tussen 10.00 en 17.00 uur voor €1,20 per uur. Na 17.00 uur is parkeren hier gratis.
+																																																									</p>#}
+		</div>
+	</div>
+
+	<div class="modal" id="ons-adres">
+		<div class="modal__body">
+			<h2>Ons adres</h2>
+
+			<p>{{nl2br(account.address)|raw}}</p>
+		</div>
+	</div>
+
+	<div class="modal" id="onze-dag">
+		<div class="modal__body">
+			<h2>Het programma</h2>
+			{{account.program_text|raw}}
+			{#}
+																																																									<p>We vieren de hele trouwdag op één locatie:
+																																																										<a href="https://www.hipper.nl/" target="_blank">'De Hipper'</a>
+																																																										in Gorinchem. Het programma is als volgt 👉🏻</p>
+																																																						
+																																																						
+																																																									<div class="gallery">
+																																																										<div><img src="/static/img/zaal2.jpg"></div>
+																																																										<div><img src="/static/img/tuin1.jpg"></div>
+																																																										<div><img src="/static/img/zaal1.jpg"></div>
+																																																									</div>
+																																																						
+																																																									<p>Met de daggasten</p>
+																																																									<p>
+																																																										<ul>
+																																																											<li>De huwelijksceremonie 👰🏼🤵🏼
+																																																											</li>
+																																																											<li>Aansnijden bruidstaart en toost 🍰 🥂
+																																																											</li>
+																																																											<li>Picture time 📸
+																																																											</li>
+																																																											<li>Het diner 🍴</li>
+																																																										</ul>
+																																																									</p>
+																																																									<p>Met de avondgasten</p>
+																																																									<p>
+																																																										<li>20.00 Party, drinks & bites 'till the lights go out! 💃🏼 🕺🏼</li>
+																																																										<li>00.30 Start van ons huwelijksweekend 🙋🏼‍♀️ 🙋🏼‍♂️</li>
+																																																									</p>
+																																																								</ul>
+																																																						{#}
+		</div>
+	</div>
+
+	<div class="modal" id="fotos">
+		<div class="modal__body">
+
+			<h2>Foto’s</h2>
+			{{account.photos|raw}}
+			{#}
+																																																								<h2>Foto’s</h2>
+																																																								<p>Op de linkjes hieronder  kun je onze trouwdag terugkijken en de dag opnieuw beleven, van begin tot eind.</p>
+																																																								<p>
+																																																									<a href="/photos/day" target="_blank">Dagfoto's</a>
+																																																								</p>
+																																																								<p></p>
+																																																								<p>
+																																																									<a href="/photos/group" target="_blank">Groepsfoto's</a>
+																																																								</p>
+																																																								<p></p>
+																																																								<p>
+																																																									<a href="/photos/party" target="_blank">Foto's van het feest</a>
+																																																								</p>
+																																																								<p></p>
+																																																								<p>
+																																																									<a href="/photos/booth" target="_blank">Foto's van de photobooth</a>
+																																																								</p>
+																																																								<p>
+																																																									<!--
+																																																																											            <p>Bewaar de inlogcode die je van ons gehad hebt goed. Hiermee kun je later de foto's van onze trouwdag terugkijken en de dag opnieuw beleven, van begin tot eind. </p>-->
+																																																								</p>
+																																																						        {#}
+		</div>
+	</div>
+
+	<div
+		class="modal" id="cadeautips">
+		<!--<img class="modal__body transparent" width="551" src="/static/img/cadeautip.png">-->
+		{% if account.present_text %}
+			<div class="modal__body" style="padding: 0; background-image: url('{{account.present_image}}'); background-repeat: no-repeat; background-size: cover">
+				<div style="white-space: pre; padding: 32px; background-image: linear-gradient(to right, rgba(255,255,255,0.75), rgba(255,255,255,0)); font-size: 18px;">{{account.present_text}}</div>
+			</div>
+		{% else %}
+			<img class="modal__body transparent" width="551" src="{{account.present_image}}">
+
+		{% endif %}
+	</div>
 
 
-<div class="gallery">
-    <div><img src="/static/img/zaal2.jpg"></div>
-    <div><img src="/static/img/tuin1.jpg"></div>
-    <div><img src="/static/img/zaal1.jpg"></div>
-</div>
-
-<p>Met de daggasten<p>
-<ul>
-<li>De huwelijksceremonie 👰🏼🤵🏼 </li>
-<li>Aansnijden bruidstaart en toost 🍰 🥂  </li>
-<li>Picture time 📸 </li>
-<li>Het diner 🍴</li>
-</ul>
-<p>Met de avondgasten<p>
-<li>20.00 Party, drinks & bites 'till the lights go out! 💃🏼 🕺🏼</li>
-<li>00.30 Start van ons huwelijksweekend 🙋🏼‍♀️ 🙋🏼‍♂️  </li>
-</ul>
-
-        </div>
-    </div>
-
-    <div class="modal" id="fotos">
-        <div class="modal__body">
-            <h2>Foto’s</h2>
-            <p>Op de linkjes hieronder  kun je onze trouwdag terugkijken en de dag opnieuw beleven, van begin tot eind.</p>
-            <p><a href="/photos/day" target="_blank">Dagfoto's</a><p>
-            <p><a href="/photos/group" target="_blank">Groepsfoto's</a><p>
-            <p><a href="/photos/party" target="_blank">Foto's van het feest</a><p>
-            <p><a href="/photos/booth" target="_blank">Foto's van de photobooth</a><p>
-            <!--
-            <p>Bewaar de inlogcode die je van ons gehad hebt goed. Hiermee kun je later de foto's van onze trouwdag terugkijken en de dag opnieuw beleven, van begin tot eind. </p>-->
-        </div>
-    </div>
-    
-    <div class="modal" id="cadeautips">
-        <img class="modal__body transparent" width="551" src="/static/img/cadeautip.png">
-    </div>
-
-
-
-<script>
-var code = {{code_json|raw}};
-</script>
+	<script>
+		var datum = '{{ enddate }}';
+var code = {{ code_json|raw }};
+	</script>
 {% endblock %}

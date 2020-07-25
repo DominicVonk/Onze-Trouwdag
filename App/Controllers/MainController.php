@@ -1,11 +1,46 @@
 <?php
+
 namespace App\Controllers;
 
-use \App\Library\Session;
-use \App\Models\Code;
+use App\Library\Session;
+use App\Models\Account;
+use App\Models\Code;
 
 class MainController extends \DraftMVC\DraftController
 {
+    public function index()
+    {
+        $accounts = Account::findAll();
+        foreach ($accounts as $account) {
+            if ($account->url === $_SERVER['HTTP_HOST']) {
+                $account = $account->dump();
+                $account['weddingdate'] = strftime('%e %B %Y', strtotime($account['weddingdate']));
+                $account['infuture'] = $account['weddingdate'] > date('Y-m-d') ? true : false;
+                $this->view->account = $account;
+            }
+        }
+    }
+    public function gallery($account, $type)
+    {
+        $imagePath = PUBLIC_PATH . '/assets/gallery/' . $account->id . '/' . $type . '';
+        if (is_dir($imagePath)) {
+            $photos = glob(realpath(__DIR__ . '/../..') . '/public/assets/gallery/' . $account->id . '/' . $type . '/*.{jpg,jpeg,png,JPG,JPEG,PNG}', GLOB_BRACE);
+            $photos = array_map(function ($e) {
+                return str_replace(realpath(__DIR__ . '/../..') . '/public', '', $e);
+            }, $photos);
+            natsort($photos);
+        } else {
+            $photos = [];
+        }
+        if (count($photos) == 0) {
+            return '';
+        } else {
+            return '<div class="gallery">
+            <div><img src="' . implode('"></div>
+            <div><img src="', $photos) . '"></div>
+        </div>';
+        }
+    }
     public function main($code = null)
     {
         $self = $this;
@@ -14,7 +49,7 @@ class MainController extends \DraftMVC\DraftController
             $codeRows = Code::find(' code = ? ', [$code]);
             foreach ($codeRows as $codeRow) {
                 if (stripos($_SERVER['HTTP_HOST'], $codeRow->account->url) !== false) {
-                    Session::set('code', $codeRow->code);
+                    Session::set('code', $codeRow->id);
                     $found = true;
                 }
             }
@@ -26,7 +61,7 @@ class MainController extends \DraftMVC\DraftController
         if (!Session::get('code')) {
             $this->redirect('/');
         }
-        $code = Code::findOne('`code` = ? AND `status` < ?', [Session::get('code'), 3]);
+        $code = Code::findOne('`id` = ? AND `status` < ?', [Session::get('code'), 3]);
         if ($code->visits == '') {
             $code->visits = 0;
         } else {
@@ -37,67 +72,38 @@ class MainController extends \DraftMVC\DraftController
         $this->view->code = $code->dump();
         $this->personCount = ($code->adults + $code->children);
         $this->view->code_json = json_encode($this->view->code);
-        $this->view->addFilter('m', function ($word) use ($self) {return $self->multiWord($word);}, array());
+        $this->view->addFilter('m', function ($word) use ($self) {
+            return $self->multiWord($word);
+        }, array());
+        $this->view->addFunction('nl2br', function ($v) {
+            return nl2br($v);
+        }, ['is_safe' => ['html']]);
+        $this->view->account = $code->account->dump();
+        $this->view->account['program_text'] = str_replace('[gallery]', $this->gallery($code->account, 'program'), $this->view->account['program_text']);
+        $this->view->formsubscription = $code->account->enddate >= date('Y-m-d');
+
+        $this->view->formmaybeopen = $code->account->weddingdate > date('Y-m-d') ? true : false;
+        if (substr($code->account->enddate, 0, 4) > date('Y')) {
+            $this->view->enddate =  strftime('%e %B %Y',  strtotime(($code->account->enddate)));
+        } else {
+            $this->view->enddate =  strftime('%e %B',  strtotime(($code->account->enddate)));
+        }
     }
     public function photos($type)
     {
         if (!Session::get('code')) {
             $this->redirect('/');
         }
-        $photos = glob(realpath(__DIR__ . '/../..') . '/public/static/img/photos/' . $type . '/*.{jpg,jpeg,png,JPG,JPEG,PNG}', GLOB_BRACE);
-        $photos = array_map(function ($e) {return str_replace(realpath(__DIR__ . '/../..') . '/public', '', $e);}, $photos);
+        $code = Code::findOne('`id` = ? AND `status` < ?', [Session::get('code'), 3]);
+        $photos = glob(realpath(__DIR__ . '/../..') . '/public/assets/photos/' . $code->account_id . '/' . $type . '/*.{jpg,jpeg,png,JPG,JPEG,PNG}', GLOB_BRACE);
+        $photos = array_map(function ($e) {
+            return str_replace(realpath(__DIR__ . '/../..') . '/public', '', $e);
+        }, $photos);
         natsort($photos);
         $this->view->photos = $photos;
     }
-    public function overview($day = 0)
-    {
-        $this->setView(new \DraftMVC\DraftViewTwig('admin/overview'));
-        if ($day == 0) {
-            $codes = array_map(function ($a) {return $a->dump();}, Code::find('account = ? AND status < ?', [1, 3]));
-        } else if ($day == 1) {
-            $codes = array_map(function ($a) {return $a->dump();}, Code::find('account = ? AND status < ? AND (type = ? OR type = ?)', [1, 3, 0, 1]));
-        } else {
-            $codes = array_map(function ($a) {return $a->dump();}, Code::find('account = ? AND status < ? AND (type = ? OR type = ?)', [1, 3, 1, 2]));
-        }
-        $codesEntered = array_filter($codes, function ($code) {return $code['status'] > 0;});
-        $codesNotEntered = array_filter($codes, function ($code) {return $code['status'] == 0;});
 
-        usort($codesEntered, function ($a, $b) {
-            return ($a['internal_name'] > $b['internal_name'] ? 1 : -1);
-        });
-        usort($codesNotEntered, function ($a, $b) {
-            return ($a['internal_name'] > $b['internal_name'] ? 1 : -1);
-        });
-        $this->view->day = $day;
-        $codes = array_merge($codesEntered, $codesNotEntered);
-        $adults = 0;
-        $children = 0;
-        foreach ($codes as $code) {
-            if ($code['status'] < 2) {
-                $adults += $code['adults'];
-                $children += $code['children'];
-            }
-        }
-        $this->view->adults = $adults;
-        $this->view->children = $children;
-        $this->view->codes = $codes;
-    }
-    public function create()
-    {
-        $this->setView(new \DraftMVC\DraftViewTwig('admin/manage'));
-        $this->view->code = (new Code())->dump();
-        $this->view->code['code'] = rand(1111, 9999);
-        while (Code::findOne('code = ?', [$this->view->code['code']]) !== false) {
-            $this->view->code['code'] = rand(1111, 9999);
-        }
-        $this->view->method = 'create';
-    }
-    public function edit($id)
-    {
-        $this->setView(new \DraftMVC\DraftViewTwig('admin/manage'));
-        $this->view->code = Code::findOne(' id = ? ', [$id])->dump();
-        $this->view->method = 'edit';
-    }
+
     public function multiWord($word)
     {
         if ($this->personCount == 1) {

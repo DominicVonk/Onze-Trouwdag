@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta charset="UTF-8"/>
+		<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+		<meta content="ie=edge" http-equiv="X-UA-Compatible"/>
+		<title>Onze trouwdag Admin</title>
+		<link href="https://fonts.googleapis.com/css?family=Nunito:400,400i,700,700i&display=swap" rel="stylesheet">
+		<link crossorigin="anonymous" href="https://pro.fontawesome.com/releases/v5.9.0/css/all.css" integrity="sha384-vlOMx0hKjUCl4WzuhIhSNZSm2yQCaf0mOU1hEDK/iztH3gU4v5NMmJln9273A6Jz" rel="stylesheet">
+
+		<link rel="stylesheet" href="/static/admin/css/bootstrap.min.css" crossorigin="anonymous">
+		<link rel="stylesheet" href="/static/admin/css/custom.css" crossorigin="anonymous">
+		<script src="/static/admin/js/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
+		<script src="/static/admin/js/bootstrap.bundle.js" crossorigin="anonymous"></script>
+	</head>
+	<body>
+		{% if not islogin %}
+			<nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light">
+				<a class="navbar-brand" href="#">Onze Trouwdag</a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<ul class="navbar-nav mr-auto">
+
+						<li class="nav-item">
+
+							<a class="nav-link" href="/admin/invitees">Gasten</a>
+						</li>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								Content
+							</a>
+							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<a class="dropdown-item" href="/admin/content/main">Welkomsbericht</a>
+								<a class="dropdown-item" href="/admin/content/present">Cadeautip</a>
+								<a class="dropdown-item" href="/admin/content/location">Locatie</a>
+								<a class="dropdown-item" href="/admin/content/program">Programma</a>
+								<a class="dropdown-item" href="/admin/content/photos">Foto's</a>
+								<a class="dropdown-item" href="/admin/content/address">Adres</a>
+							</div>
+						</li>
+
+						<li class="nav-item">
+
+							<a class="nav-link" href="/admin/theme">Thema</a>
+						</li>
+
+						<li class="nav-item">
+							<a class="nav-link" href="/admin/settings">Instellingen</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="/admin/logout">Logout</a>
+						</li>
+					</ul>
+					<form action="/admin/switch" class="form-inline my-2 my-lg-0">
+						<select class="form-control mr-sm-2" name="account" onchange="this.parentNode.submit()">
+							{% for account in accounts %}
+								<option value="{{account.id}}" {% if account.id == currentAccount %} selected {% endif %}>{{account.name}}</option>
+							{% endfor %}
+						</select>
+					</form>
+				</div>
+			</nav>
+			<style>
+				/* Show it is fixed to the top */
+				body {
+					min-height: 75rem;
+					padding-top: 4.5rem;
+				}
+			</style>
+		{% endif %}
+		{% block content %}{% endblock %}
+
+		<script src="/static/admin/js/custom.js"></script>
+	</body>
+</html></body></html>

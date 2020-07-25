@@ -1,0 +1,66 @@
+{% extends 'admin/layout.twig' %}
+{% block content %}
+
+	<div class="container pt-4 pb-4">
+
+		<form action="/api/theme/save" enctype="multipart/form-data" method="POST">
+			<div class="row mb-4">
+				<div class="col">
+					<h2>Thema</h2>
+				</div>
+				<div class="col-auto mr-auto">
+					<button class="btn btn-primary" type="submit">Opslaan</button>
+				</div>
+			</div>
+
+			<div class="row mb-4">
+				<div class="col">
+					<div class="form-group">
+						<label>Accent kleur</label>
+
+						<input type="text" class="form-control" value="{{account.accent_color}}" name="accent_color">
+					</div>
+					<div class="form-group">
+						<label>Achtergrond</label>
+						<div class="input-group">
+							<span class="input-group-btn">
+								<span class="btn btn-default btn-file">
+									Bladeren…
+									<input type="file" name="image" id="imgInp">
+								</span>
+							</span>
+							<input type="text" class="form-control" readonly>
+						</div>
+						<img id='img-upload' {% if account.background_image %} src="{{account.background_image}}" {% endif %}/>
+					</div>
+					<div class="form-group">
+						<label>Logo</label>
+						<div class="input-group">
+							<span class="input-group-btn">
+								<span class="btn btn-default btn-file">
+									Bladeren…
+									<input type="file" name="logo" id="imgInp">
+								</span>
+							</span>
+							<input type="text" class="form-control" readonly>
+						</div>
+						<img id='img-upload' {% if account.logo_path %} src="{{account.logo_path}}" {% endif %}/>
+					</div>
+					<div class="form-group">
+						<label>OG Logo</label>
+						<div class="input-group">
+							<span class="input-group-btn">
+								<span class="btn btn-default btn-file">
+									Bladeren…
+									<input type="file" name="oglogo" id="imgInp">
+								</span>
+							</span>
+							<input type="text" class="form-control" readonly>
+						</div>
+						<img id='img-upload' {% if account.oglogo %} src="{{account.oglogo}}" {% endif %}/>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+{% endblock %}

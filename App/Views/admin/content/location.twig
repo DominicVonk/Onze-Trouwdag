@@ -1,0 +1,42 @@
+{% extends 'admin/layout.twig' %}
+{% block content %}
+	<script src="https://cdn.ckeditor.com/ckeditor5/20.0.0/classic/ckeditor.js"></script>
+
+
+	<div class="container pt-4 pb-4">
+
+		<form action="/api/content/location/save" enctype="multipart/form-data" method="POST">
+			<div class="row mb-4">
+				<div class="col">
+					<h2>Locatie</h2>
+				</div>
+				<div class="col-auto mr-auto">
+					<button class="btn btn-primary" type="submit">Opslaan</button>
+				</div>
+			</div>
+
+			<div class="row mb-4">
+				<div class="col">
+					<div id="editor">
+						{{ account.location_text|raw}}
+					</div>
+					<textarea name="content" style="display:none;"></textarea>
+				</div>
+			</div>
+
+		</form>
+	</div>
+
+	<script>
+		var editorC = null;
+ClassicEditor.create(document.querySelector('#editor')).then(editor => {
+window.requestAnimationFrame(function e() {
+document.querySelector('textarea').value = editor.getData();
+window.requestAnimationFrame(e);
+
+})
+}).catch(error => {
+console.error(error);
+});
+	</script>
+{% endblock %}

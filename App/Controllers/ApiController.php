@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use \App\Library\Session;
@@ -11,8 +12,8 @@ class ApiController extends \DraftMVC\DraftController
         $requestData = $this->requestData();
         $codeRows = Code::find(' code = ? ', [$requestData['code']]);
         foreach ($codeRows as $codeRow) {
-            if (stripos($_SERVER['HTTP_HOST'], $codeRow->account->url) !== false) {
-                Session::set('code', $codeRow->code);
+            if ($_SERVER['HTTP_HOST'] === $codeRow->account->url) {
+                Session::set('code', $codeRow->id);
                 return [
                     'status' => 200,
                     'data' => [
@@ -37,7 +38,6 @@ class ApiController extends \DraftMVC\DraftController
 
     public function create()
     {
-
         $code = new Code();
         $code->name = $_POST['name'];
         $code->code = $_POST['code'];
@@ -68,7 +68,7 @@ class ApiController extends \DraftMVC\DraftController
     public function attendence()
     {
         $requestData = $this->requestData();
-        $code = Code::findOne('code = ?', [Session::get('code')]);
+        $code = Code::findOne('id = ?', [Session::get('code')]);
         if (isset($requestData['volwassene'])) {
             $code->adults = $requestData['volwassene'];
         }
@@ -78,7 +78,7 @@ class ApiController extends \DraftMVC\DraftController
         if (isset($requestData['status'])) {
             $code->status = $requestData['status'];
         }
-        curl_setopt_array($ch = curl_init(), array(
+        /* curl_setopt_array($ch = curl_init(), array(
             CURLOPT_URL => "https://api.pushed.co/1/push",
             CURLOPT_CUSTOMREQUEST => "POST",
             CURLOPT_POSTFIELDS => array(
@@ -93,7 +93,7 @@ class ApiController extends \DraftMVC\DraftController
             CURLOPT_RETURNTRANSFER => true,
         ));
         curl_exec($ch);
-        curl_close($ch);
+        curl_close($ch);*/
         $code->save();
     }
 }

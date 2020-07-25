@@ -1,101 +1,101 @@
-import './reset/js';
-import writer from './anim/writer';
-import './components/pincode';
-import './components/trigger';
-import triggerHookModal from './components/trigger/hooks/modal';
-import chat from './components/chat';
-window.hooks['modal'] = triggerHookModal;
+import "./reset/js";
+import writer from "./anim/writer";
+import "./components/pincode";
+import "./components/trigger";
+import triggerHookModal from "./components/trigger/hooks/modal";
+import chat from "./components/chat";
+window.hooks["modal"] = triggerHookModal;
 window.triggerEnabled = false;
-if (document.querySelector('.welcome')) {
-  (async function() {
-    document.querySelector('.welcome').innerHTML = document
-      .querySelector('.welcome')
+if (document.querySelector(".welcome")) {
+  (async function () {
+    document.querySelector(".welcome").innerHTML = document
+      .querySelector(".welcome")
       .innerHTML.replace(
-        '[dag]',
+        "[greeting]",
         new Date().getHours() >= 0 && new Date().getHours() < 5
-          ? 'Goedenacht'
+          ? "Goedenacht"
           : new Date().getHours() >= 5 && new Date().getHours() < 12
-          ? 'Goedemorgen'
+          ? "Goedemorgen"
           : new Date().getHours() >= 12 && new Date().getHours() < 18
-          ? 'Goedemiddag'
-          : 'Goedenavond'
+          ? "Goedemiddag"
+          : "Goedenavond",
       );
     var h1 = writerPrepare(
-      document.querySelector('.welcome', { charTime: 64 })
+      document.querySelector(".welcome", { charTime: 64 }),
     );
     await h1();
     await waitFor(1000);
-    await new Promise(function(resolve) {
-      TweenMax.to('.welcome', 0.7, {
+    await new Promise(function (resolve) {
+      TweenMax.to(".welcome", 0.7, {
         css: {
-          top: window.innerWidth >= 960 ? '40%' : '30%',
-          fontSize: window.innerWidth >= 960 ? '24px' : '10px'
+          top: window.innerWidth >= 960 ? "40%" : "30%",
+          fontSize: window.innerWidth >= 960 ? "24px" : "10px",
         },
         ease: Power2.easeOut,
-        onComplete: resolve
+        onComplete: resolve,
       });
     });
 
     await waitFor(200);
-    new Promise(function(resolve) {
-      TweenMax.to('.card:nth-child(1)', 0.7, {
+    new Promise(function (resolve) {
+      TweenMax.to(".card:nth-child(1)", 0.7, {
         opacity: 1,
         y: 0,
         ease: Power2.easeOut,
-        onComplete: resolve
+        onComplete: resolve,
       });
     });
     await waitFor(200);
-    new Promise(function(resolve) {
-      TweenMax.to('.card:nth-child(2)', 0.7, {
+    new Promise(function (resolve) {
+      TweenMax.to(".card:nth-child(2)", 0.7, {
         opacity: 1,
         y: 0,
         ease: Power2.easeOut,
-        onComplete: resolve
+        onComplete: resolve,
       });
     });
     await waitFor(200);
-    new Promise(function(resolve) {
-      TweenMax.to('.card:nth-child(3)', 0.7, {
+    new Promise(function (resolve) {
+      TweenMax.to(".card:nth-child(3)", 0.7, {
         opacity: 1,
         y: 0,
         ease: Power2.easeOut,
-        onComplete: resolve
+        onComplete: resolve,
       });
     });
     await waitFor(200);
-    new Promise(function(resolve) {
-      TweenMax.to('.card:nth-child(4)', 0.7, {
+    new Promise(function (resolve) {
+      TweenMax.to(".card:nth-child(4)", 0.7, {
         opacity: 1,
         y: 0,
         ease: Power2.easeOut,
-        onComplete: resolve
+        onComplete: resolve,
       });
     });
     await waitFor(200);
-    new Promise(function(resolve) {
-      TweenMax.to('.card:nth-child(5)', 0.7, {
+    new Promise(function (resolve) {
+      TweenMax.to(".card:nth-child(5)", 0.7, {
         opacity: 1,
         y: 0,
         ease: Power2.easeOut,
-        onComplete: resolve
+        onComplete: resolve,
       });
     });
     await waitFor(200);
-    new Promise(function(resolve) {
-      TweenMax.to('.card:nth-child(6)', 0.7, {
+    new Promise(function (resolve) {
+      TweenMax.to(".card:nth-child(6)", 0.7, {
         opacity: 1,
         y: 0,
         ease: Power2.easeOut,
-        onComplete: resolve
+        onComplete: resolve,
       });
     });
     window.triggerEnabled = true;
   })();
 }
 async function waitFor(time) {
-  return new Promise(function(r) {
-    setTimeout(function() {
+  return new Promise(function (r) {
+    setTimeout(function () {
       r();
     }, time);
   });
@@ -103,86 +103,89 @@ async function waitFor(time) {
 function writerPrepare(element, options) {
   options = Object.assign(
     {
-      breakDoubleSpace: true
+      breakDoubleSpace: true,
     },
-    options
+    options,
   );
-  element.style.height = element.clientHeight + 'px';
-  element.style.width = element.clientWidth + 'px';
+  element.style.height = element.clientHeight + "px";
+  element.style.width = element.clientWidth + "px";
   var htmlToDraw = element.innerText;
   if (options.breakDoubleSpace) {
-    htmlToDraw = htmlToDraw.split('  ').join('\n');
+    htmlToDraw = htmlToDraw.split("  ").join("\n");
   }
-  element.innerText = '';
+  element.innerText = "";
   element.style.opacity = 1;
   return () => writer([element, htmlToDraw], options);
 }
 
 async function sendChoice(option) {
-  await fetch('/api/attendence', {
+  await fetch("/api/attendence", {
     headers: {
-      'Content-Type': 'application/json'
+      "Content-Type": "application/json",
     },
-    method: 'POST',
+    method: "POST",
     body: JSON.stringify(option),
-    credentials: 'same-origin'
+    credentials: "same-origin",
   });
   if (option.status) {
-    code.status = option.status + '';
+    code.status = option.status + "";
   }
-  if (typeof option.volwassene !== 'undefined') {
+  if (typeof option.volwassene !== "undefined") {
     code.adults = option.volwassene;
   }
-  if (typeof option.kinderen !== 'undefined') {
+  if (typeof option.kinderen !== "undefined") {
     code.children = option.kinderen;
   }
-  chat.write('Wij hebben je keuze opgeslagen.');
+  chat.write("Wij hebben je keuze opgeslagen.");
 }
 
-window.aanwezigheid = async function(force) {
+window.aanwezigheid = async function (force) {
   let options;
   if (!force) {
-    if (code.status === '1') {
-      var jullieofje =
-        parseInt(code.adults) + parseInt(code.children) > 1
-          ? 'jullie komen'
-          : 'je komt';
+    if (code.status === "1") {
+      var jullieofje = parseInt(code.adults) + parseInt(code.children) > 1
+        ? "jullie komen"
+        : "je komt";
       chat.write(
         `Leuk dat ${jullieofje}. Wij rekenen op ` +
-          ((code.adults == 1 ? '1 volwassene' : code.adults + ' volwassenen') +
+          ((code.adults == 1 ? "1 volwassene" : code.adults + " volwassenen") +
             (code.children > 0
-              ? ' en ' +
-                (code.children == 1 ? '1 kind' : code.children + ' kinderen')
-              : '')) +
-          ', klopt dat?'
+              ? " en " +
+                (code.children == 1 ? "1 kind" : code.children + " kinderen")
+              : "")) +
+          ", klopt dat?",
       );
       options = await chat.options({ Ja: false, Nee: true });
 
       if (!options) {
         chat.write(
-          `Gezellig! Mocht dit veranderen, dan kun je dit voor 1 oktober via deze pagina doorgeven.`
+          `Gezellig! Mocht dit veranderen, dan kun je dit voor ${datum} via deze pagina doorgeven.`,
         );
 
         return;
       }
-    } else if (code.status === '2') {
-      chat.write('Jammer dat je niet kunt komen. Is dit nu veranderd?');
+    } else if (code.status === "2") {
+      chat.write("Jammer dat je niet kunt komen. Is dit nu veranderd?");
       options = await chat.options({ Ja: true, Nee: false });
       if (!options) {
         chat.write(
-          "Oh jammer, wanneer dit wel mocht veranderen, kun je dit vóór 1 oktober via deze pagina doorgeven. PS Neem later nog eens een kijkje op onze website voor de foto's!"
+          "Oh jammer, wanneer dit wel mocht veranderen, kun je dit vóór " +
+            datum +
+            " via deze pagina doorgeven. PS Neem later nog eens een kijkje op onze website voor de foto's!",
         );
         return;
       }
     }
   }
 
-  chat.write('We hopen deze bijzondere dag met je te vieren. Ben je erbij? ');
+  chat.write("We hopen deze bijzondere dag met je te vieren. Ben je erbij? ");
   options = await chat.options({ Ja: true, Nee: false });
   chat.write(
     options
-      ? ' Geweldig. 😊 Neem je nog andere volwassenen of kinderen vanaf 12 jaar mee? '
-      : "Jammer dat jullie niet kunnen komen. Mocht dit nog veranderen, dan kun je dit vóór 1 oktober via deze pagina doorgeven. PS Neem later nog eens een kijkje op onze website voor de foto's!"
+      ? " Geweldig. 😊 Neem je nog andere volwassenen of kinderen vanaf 12 jaar mee? "
+      : "Jammer dat jullie niet kunnen komen. Mocht dit nog veranderen, dan kun je dit vóór " +
+        datum +
+        " via deze pagina doorgeven. PS Neem later nog eens een kijkje op onze website voor de foto's!",
   );
 
   if (!options) {
@@ -190,36 +193,37 @@ window.aanwezigheid = async function(force) {
     return;
   }
   let volwassene = await chat.options([
-    ['Nee', 1],
+    ["Nee", 1],
     [1, 2],
     [2, 3],
     [3, 4],
-    [4, 5]
+    [4, 5],
   ]);
-  chat.write('En kom je met kinderen onder de 12 jaar?');
+  chat.write("En kom je met kinderen onder de 12 jaar?");
   let kinderen = await chat.options([
-    ['Nee', 0],
+    ["Nee", 0],
     [1, 1],
     [2, 2],
     [3, 3],
-    [4, 4]
+    [4, 4],
   ]);
-  var jullieofje =
-    parseInt(volwassene) + parseInt(kinderen) > 1 ? 'jullie komen' : 'je komt';
+  var jullieofje = parseInt(volwassene) + parseInt(kinderen) > 1
+    ? "jullie komen"
+    : "je komt";
 
   chat.write(
     `Leuk dat ${jullieofje}. Wij rekenen op ` +
-      ((volwassene == 1 ? '1 volwassene' : volwassene + ' volwassenen') +
+      ((volwassene == 1 ? "1 volwassene" : volwassene + " volwassenen") +
         (kinderen > 0
-          ? ' en ' + (kinderen == 1 ? '1 kind' : kinderen + ' kinderen')
-          : '')) +
-      ', klopt dat?'
+          ? " en " + (kinderen == 1 ? "1 kind" : kinderen + " kinderen")
+          : "")) +
+      ", klopt dat?",
   );
   options = await chat.options({ Ja: true, Nee: false });
   chat.write(
     options
-      ? `Gezellig. We voegen je toe aan de gastenlijst.  Mocht dit nog veranderen, dan kun je dit vóór 1 oktober via deze pagina doorgeven.`
-      : 'Wil je de keuze veranderen?'
+      ? `Gezellig. We voegen je toe aan de gastenlijst.  Mocht dit nog veranderen, dan kun je dit vóór ${datum} via deze pagina doorgeven.`
+      : "Wil je de keuze veranderen?",
   );
   if (options) {
     sendChoice({ volwassene, kinderen, status: 1 });
@@ -228,7 +232,7 @@ window.aanwezigheid = async function(force) {
   options = await chat.options({ Ja: true, Nee: false });
   if (!options) {
     chat.write(
-      `Gezellig. We voegen je toe aan de gastenlijst.  Mocht dit nog veranderen, dan kun je dit vóór 1 oktober via deze pagina doorgeven.`
+      `Gezellig. We voegen je toe aan de gastenlijst.  Mocht dit nog veranderen, dan kun je dit vóór ${datum} via deze pagina doorgeven.`,
     );
     await sendChoice({ volwassene, kinderen, status: 1 });
   } else {
@@ -237,6 +241,6 @@ window.aanwezigheid = async function(force) {
   }
 };
 
-window.aanwezigheidSluiten = async function() {
+window.aanwezigheidSluiten = async function () {
   chat.clear();
 };

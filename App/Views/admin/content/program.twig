@@ -1,0 +1,61 @@
+{% extends 'admin/layout.twig' %}
+{% block content %}
+	<script src="https://cdn.ckeditor.com/ckeditor5/20.0.0/classic/ckeditor.js"></script>
+
+
+	<div class="container pt-4 pb-4">
+
+		<form action="/api/content/program/save" enctype="multipart/form-data" method="POST">
+			<div class="row mb-4">
+				<div class="col">
+					<h2>Programma</h2>
+				</div>
+				<div class="col-auto mr-auto">
+					<button class="btn btn-primary" type="submit">Opslaan</button>
+				</div>
+			</div>
+
+			<div class="row mb-4">
+				<div class="col">
+					<div id="editor">
+						{{ account.program_text|raw}}
+					</div>
+					<textarea name="content" style="display:none;"></textarea>
+				</div>
+			</div>
+			<div class="row mb-4">
+				<div class="col">
+					<div class="form-group">
+						<label>Gallery</label>
+						<div class="input-group">
+							<span class="input-group-btn">
+								<span class="btn btn-default btn-file">
+									Bladeren…
+									<input type="file" name="image[]" multiple id="imgInp">
+								</span>
+							</span>
+							<input type="text" class="form-control" readonly>
+						</div>
+						{% for image in gallery %}
+							<img id='img-upload' src="{{image}}"/>
+						{% endfor %}
+					</div>
+
+				</div>
+			</div>
+		</form>
+	</div>
+
+	<script>
+		var editorC = null;
+ClassicEditor.create(document.querySelector('#editor')).then(editor => {
+window.requestAnimationFrame(function e() {
+document.querySelector('textarea').value = editor.getData();
+window.requestAnimationFrame(e);
+
+})
+}).catch(error => {
+console.error(error);
+});
+	</script>
+{% endblock %}

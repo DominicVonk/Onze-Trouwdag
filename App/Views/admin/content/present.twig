@@ -1,0 +1,41 @@
+{% extends 'admin/layout.twig' %}
+{% block content %}
+
+	<div class="container pt-4 pb-4">
+
+		<form action="/api/content/present/save" enctype="multipart/form-data" method="POST">
+			<div class="row mb-4">
+				<div class="col">
+					<h2>Cadeautip</h2>
+				</div>
+				<div class="col-auto mr-auto">
+					<button class="btn btn-primary" type="submit">Opslaan</button>
+				</div>
+			</div>
+
+			<div class="row mb-4">
+				<div class="col">
+					<textarea class="form-control" data-auto-size name="content">{{ account.present_text }}</textarea>
+				</div>
+			</div>
+			<div class="row mb-4">
+				<div class="col">
+					<div class="form-group">
+						<label>Achtergrond</label>
+						<div class="input-group">
+							<span class="input-group-btn">
+								<span class="btn btn-default btn-file">
+									Bladeren…
+									<input type="file" name="image" id="imgInp">
+								</span>
+							</span>
+							<input type="text" class="form-control" readonly>
+						</div>
+						<img id='img-upload' {% if account.present_image %} src="{{account.present_image}}" {% endif %}/>
+					</div>
+
+				</div>
+			</div>
+		</form>
+	</div>
+{% endblock %}

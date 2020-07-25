@@ -1,101 +1,62 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8"/>
-        <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-        <meta content="ie=edge" http-equiv="X-UA-Compatible"/>
-        <title>Document</title>
-        <link href="https://fonts.googleapis.com/css?family=Nunito:400,400i,700,700i&display=swap" rel="stylesheet">
-        <link crossorigin="anonymous" href="https://pro.fontawesome.com/releases/v5.9.0/css/all.css" integrity="sha384-vlOMx0hKjUCl4WzuhIhSNZSm2yQCaf0mOU1hEDK/iztH3gU4v5NMmJln9273A6Jz" rel="stylesheet">
-        <style>
-        *,
-            *:before,
-            *:after {
-                box-sizing: border-box;
-            }
-            body {
-                padding: 16px;
-                font-family: 'Nunito', sans-serif;
-            }
-            form {
-                width: 300px;
-                margin: 40px auto;
-            }
-            .field {
-                margin-bottom: 16px;
-            }
-            label {
-                display: block;
-                margin-bottom: 4px;
-            }
-            input, select {
-                width: 300px;
-                font-size: 16px;
-    padding: 8px;
-                font-family: 'Nunito', sans-serif;
-            }
-            .button {
-                text-align: right;
-            }
-            input[type="submit"] {
-                background-image: -webkit-gradient(linear,left top,left bottom,from(#fe9eb6),to(#e36983));
-                background-image: linear-gradient(-180deg,#fe9eb6,#e36983);
-                border-radius: 5px;
-                color: #fff;
-    font-size: 22px;
-    padding: 16px;
-                border: none;
-            }
-            a {
-                color: #0786ad;
-                text-decoration: none;
-            }
-        </style>
-    
-    </head>
-    <body>
-        <form action="/api/{{method}}/{{code.id}}" method="POST">
-            <a href="/CAPSKDHR"><i class="fa fa-arrow-left"></i> Terug</a><br><br>
-            <div class="field">
-                <label>Naam</label>
-                <input name="name" value="{{code.name}}">
-            </div>
-            <div class="field">
-                <label>Interne Naam</label>
-                <input name="internal_name" value="{{code.internal_name}}">
-            </div>
-            <div class="field">
-                <label>Code</label>
-                <input name="code" value="{{code.code}}">
-            </div>
-            <div class="field">
-                <label>Volwassenen</label>
-                <input name="adults" type="tel" value="{{code.adults}}">
-            </div>
-            <div class="field">
-                <label>Kinderen</label>
-                <input name="children" value="{{code.children}}">
-            </div>
-            <div class="field">
-                <label>Aanwezigheid</label>
-                <select name="status">
-                    <option value="0" {% if code.status == 0 or code.status == '' %}selected{% endif %}>Niet ingevuld</option>
-                    <option value="1" {% if code.status == 1 %}selected{% endif %}>Aanwezig</option>
-                    <option value="2" {% if code.status == 2 %}selected{% endif %}>Afwezig</option>
-                    <option value="3" {% if code.status == 3 %}selected{% endif %}>Verwijderen</option>
-                </select>
-            </div>
-            <div class="field">
-                <label>Type</label>
-                <select name="type">
-                    <option value="0" {% if code.type == 0 or code.type == '' %}selected{% endif %}>Avondgast</option>
-                    <option value="1" {% if code.type == 1 %}selected{% endif %}>Daggast</option>
-                    <option value="2" {% if code.type == 2 %}selected{% endif %}>Middaggast</option>
-                </select>
-            </div>
-            <div class="button">
-                <input type="submit" value="Opslaan">
-            </div>
-        </form>
-    </body>
-</html>
+{% extends 'admin/layout.twig' %}
+{% block content %}
+
+	<div class="container pt-4 pb-4">
+
+		<form action="/api/invitees/{{method}}/{{code.id}}" enctype="multipart/form-data" method="POST">
+			<div class="row mb-4">
+				<div class="col">
+					<h2>
+						{% if method == 'create' %}Nieuwe gast toevoegen{% else %}Gast bewerken
+						{% endif %}
+					</h2>
+				</div>
+				<div class="col-auto mr-auto">
+					<button class="btn btn-primary" type="submit">Opslaan</button>
+				</div>
+			</div>
+
+			<div class="row mb-4">
+				<div class="col">
+					<div class="form-group">
+						<label>Naam</label>
+						<input class="form-control" name="name" value="{{code.name}}">
+					</div>
+					<div class="form-group">
+						<label>Interne Naam</label>
+						<input class="form-control" name="internal_name" value="{{code.internal_name}}">
+					</div>
+					<div class="form-group">
+						<label>Code</label>
+						<input class="form-control" name="code" value="{{code.code}}">
+					</div>
+					<div class="form-group">
+						<label>Volwassenen</label>
+						<input class="form-control" name="adults" type="tel" value="{{code.adults}}">
+					</div>
+					<div class="form-group">
+						<label>Kinderen</label>
+						<input class="form-control" name="children" value="{{code.children}}">
+					</div>
+					<div class="form-group">
+						<label>Aanwezigheid</label>
+						<select class="form-control" name="status">
+							<option value="0" {% if code.status == 0 or code.status == '' %} selected {% endif %}>Niet ingevuld</option>
+							<option value="1" {% if code.status == 1 %} selected {% endif %}>Aanwezig</option>
+							<option value="2" {% if code.status == 2 %} selected {% endif %}>Afwezig</option>
+							<option value="3" {% if code.status == 3 %} selected {% endif %}>Verwijderen</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label>Type</label>
+						<select class="form-control" name="type">
+							<option value="0" {% if code.type == 0 or code.type == '' %} selected {% endif %}>Avondgast</option>
+							<option value="1" {% if code.type == 1 %} selected {% endif %}>Daggast</option>
+							<option value="2" {% if code.type == 2 %} selected {% endif %}>Middaggast</option>
+						</select>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+{% endblock %}

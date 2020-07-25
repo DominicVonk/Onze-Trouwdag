@@ -1,20 +1,23 @@
 {% extends 'layouts/main.twig' %}
-
 {% block body %}
 <div class="logo">
-    <img src="/static/img/logo.png" width="512">
-    <div class="subtitle">
-    zijn getrouwd 👰🏼🤵🏼<br>
-    25 oktober 2019
-    </div>
+  {% if account.logo_path %}
+  <img src="{{account.logo_path}}" width="512" />
+  {% else %}
+  <h1>{{account.couple_name}}</h1>
+  {% endif %}
+  <div class="subtitle">
+    {% if account.infuture %}gaan trouwen{% else %}zijn getrouwd{% endif %} 👰🏼🤵🏼<br />
+    {{account.weddingdate}}
+  </div>
 </div>
 <div class="text">
-    Vul hieronder je code in.
+  Vul hieronder je code in.
 </div>
 <div class="pincode">
-    <input type="tel" maxlength="1" pattern="\d*" inputmode="tel">
-    <input type="tel" maxlength="1" pattern="\d*" inputmode="tel">
-    <input type="tel" maxlength="1" pattern="\d*" inputmode="tel">
-    <input type="tel" maxlength="1" pattern="\d*" inputmode="tel">
+  <input type="tel" maxlength="1" pattern="\d*" inputmode="tel" />
+  <input type="tel" maxlength="1" pattern="\d*" inputmode="tel" />
+  <input type="tel" maxlength="1" pattern="\d*" inputmode="tel" />
+  <input type="tel" maxlength="1" pattern="\d*" inputmode="tel" />
 </div>
 {% endblock %}

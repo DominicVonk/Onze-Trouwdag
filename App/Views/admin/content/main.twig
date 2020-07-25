@@ -1,0 +1,19 @@
+{% extends 'admin/layout.twig' %}
+{% block content %}
+
+	<div class="container pt-4 pb-4">
+
+		<form action="/api/content/main/save" method="POST">
+			<div class="row mb-4">
+				<div class="col">
+					<h2>Welkomsbericht</h2>
+				</div>
+				<div class="col-auto mr-auto">
+					<button class="btn btn-primary" type="submit">Opslaan</button>
+				</div>
+			</div>
+			<textarea class="form-control" data-auto-size name="content">{{ account.main_text }}</textarea>
+
+		</form>
+	</div>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends 'admin/layout.twig' %}
+{% block content %}
+
+	<div class="container pt-4 pb-4">
+
+		<form action="/api/settings/save" enctype="multipart/form-data" method="POST">
+			<div class="row mb-4">
+				<div class="col">
+					<h2>Instellingen</h2>
+				</div>
+				<div class="col-auto mr-auto">
+					<button class="btn btn-primary" type="submit">Opslaan</button>
+				</div>
+			</div>
+
+			<div class="row mb-4">
+				<div class="col">
+					<div class="form-group">
+						<label>Trouwdatum</label>
+
+						<input class="form-control" type="date" value="{{account.weddingdate}}" name="weddingdate">
+					</div>
+					<div class="form-group">
+						<label>Einde inschrijfdatum</label>
+
+						<input class="form-control" type="date" value="{{account.enddate}}" name="enddate">
+					</div>
+
+					<div class="form-group">
+						<label>Ons programma zichtbaar voor</label>
+						<select class="form-control" name="our_program_button">
+							<option value="1" {% if account.our_program_button == 1%} selected {%endif%}>Iedereen</option>
+							<option value="2" {% if account.our_program_button == 2%} selected {%endif%}>Daggasten</option>
+							<option value="3" {% if account.our_program_button == 3%} selected {%endif%}>Avondgasten</option>
+							<option value="4" {% if account.our_program_button == 4%} selected {%endif%}>Niemand</option>
+						</select>
+					</div>
+
+					<div class="form-group">
+						<label>Trouwlocatie zichtbaar voor</label>
+						<select class="form-control" name="our_wedding_day">
+							<option value="1" {% if account.our_wedding_day == 1%} selected {%endif%}>Iedereen</option>
+							<option value="2" {% if account.our_wedding_day == 2%} selected {%endif%}>Daggasten</option>
+							<option value="3" {% if account.our_wedding_day == 3%} selected {%endif%}>Avondgasten</option>
+							<option value="4" {% if account.our_wedding_day == 4%} selected {%endif%}>Niemand</option>
+						</select>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+{% endblock %}
