@@ -91,14 +91,18 @@ if (document.querySelector(".welcome")) {
       });
     });
     window.triggerEnabled = true;
+
+    sessionStorage.loaded = 1;
   })();
 }
 async function waitFor(time) {
-  return new Promise(function (r) {
-    setTimeout(function () {
-      r();
-    }, time);
-  });
+  if (!sessionStorage.loaded) {
+    return new Promise(function (r) {
+      setTimeout(function () {
+        r();
+      }, time);
+    });
+  }
 }
 function writerPrepare(element, options) {
   options = Object.assign(

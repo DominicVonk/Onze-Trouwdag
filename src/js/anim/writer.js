@@ -20,7 +20,6 @@ export default function writer(
         } else {
           element.style.height = "auto";
           element.style.width = "auto";
-          sessionStorage.loaded = 1;
           resolve();
         }
       });
@@ -28,7 +27,6 @@ export default function writer(
       element.innerHTML = htmlToDraw;
       element.style.height = "auto";
       element.style.width = "auto";
-      sessionStorage.loaded = 1;
       resolve();
     }
   });
