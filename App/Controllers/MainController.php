@@ -67,7 +67,9 @@ class MainController extends \DraftMVC\DraftController
         } else {
             $code->visits = intval($code->visits);
         }
-        $code->visits += 1;
+        if (!$code->ignore_count) {
+            $code->visits += 1;
+        }
         $code->save();
         $this->view->code = $code->dump();
         $this->personCount = ($code->adults + $code->children);
