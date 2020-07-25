@@ -79,23 +79,27 @@ class ApiController extends \DraftMVC\DraftController
             $code->status = $requestData['status'];
         }
         $code->save();
+        if ($code->account->pushnotification) :
+            $pushc = explode(',', $code->account->pushnotification);
+            foreach ($pushc as $push) :
+                $ch = curl_init();
 
-        $ch = curl_init();
+                curl_setopt($ch, CURLOPT_URL, 'https://maker.ifttt.com/trigger/subscription/with/key/' . $push . '');
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                curl_setopt($ch, CURLOPT_POST, 1);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(array(
+                    "value1" => ($code->internal_name ?: $code->name) . ' heeft zich ' . ($code->status === 1 ? 'aangemeld' : 'afgemeld') . '.'
+                )));
+                $headers = array();
+                $headers[] = 'Content-Type: application/json';
+                curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
-        curl_setopt($ch, CURLOPT_URL, 'https://maker.ifttt.com/trigger/subscription/with/key/ctg_Uu6Q9upXnd_Yzft8Oy');
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(array(
-            "value1" => ($code->internal_name ?: $code->name) . ' heeft zich ' . ($code->status === 1 ? 'aangemeld' : 'afgemeld') . '.'
-        )));
-        $headers = array();
-        $headers[] = 'Content-Type: application/json';
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-
-        $result = curl_exec($ch);
-        if (curl_errno($ch)) {
-            echo 'Error:' . curl_error($ch);
-        }
-        curl_close($ch);
+                $result = curl_exec($ch);
+                if (curl_errno($ch)) {
+                    echo 'Error:' . curl_error($ch);
+                }
+                curl_close($ch);
+            endforeach;
+        endif;
     }
 }
