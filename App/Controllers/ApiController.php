@@ -80,17 +80,17 @@ class ApiController extends \DraftMVC\DraftController
         }
         curl_setopt_array($ch = curl_init(), array(
             CURLOPT_URL => "https://api.pushback.io/v1/send ",
-            CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_HTTPHEADER => array(
-                'Authorization: Bearer at_2OIfjk9uTSP1bLFOH4Aymg'
-            ),
-            CURLOPT_POSTFIELDS => array(
+            CURLOPT_POST => 1,
+            CURLOPT_USERPWD => 'at_2OIfjk9uTSP1bLFOH4Aymg' . ':' . '',
+            CURLOPT_POSTFIELDS => json_encode(array(
                 "id" => "Channel_1149",
                 "title" => "Onze-Trouwdag",
                 "body" => ($code->internal_name ?: $code->name) . ' heeft zich ' . ($code->status === 1 ? 'aangemeld' : 'afgemeld') . '.',
-            ),
-            CURLOPT_SAFE_UPLOAD => true,
+            )),
             CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HTTPHEADER => [
+                'Content-Type' => 'application/json'
+            ]
         ));
         curl_exec($ch);
         curl_close($ch);
