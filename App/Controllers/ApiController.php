@@ -79,7 +79,7 @@ class ApiController extends \DraftMVC\DraftController
             $code->status = $requestData['status'];
         }
         curl_setopt_array($ch = curl_init(), array(
-            CURLOPT_URL => "https://api.pushback.io/v1/send ",
+            CURLOPT_URL => "https://api.pushback.io/v1/send_sync",
             CURLOPT_POST => 1,
             CURLOPT_USERPWD => 'at_2OIfjk9uTSP1bLFOH4Aymg' . ':' . '',
             CURLOPT_POSTFIELDS => json_encode(array(
