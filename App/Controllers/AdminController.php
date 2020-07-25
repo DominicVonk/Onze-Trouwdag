@@ -247,6 +247,7 @@ class AdminController extends \DraftMVC\DraftController
         $account->weddingdate = $_POST['weddingdate'];
         $account->our_program_button = $_POST['our_program_button'];
         $account->our_wedding_day = $_POST['our_wedding_day'];
+        $account->pushnotification = $_POST['pushnotification'];
         $account->save();
         $this->redirect('/admin/settings');
     }
