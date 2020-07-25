@@ -10,7 +10,9 @@
 		{%- endblock -%}
 	</title>
 	<meta name="description" content="{% block description %}{% endblock %}">
-	<meta property="og:image" content="https://{{account.url}}{{account.oglogo}}">
+	<meta property="og:image" itemprop="image" content="https://{{account.url}}{{account.oglogo}}">
+	<meta property="og:image:secure_url" itemprop="image" content="https://{{account.url}}{{account.oglogo}}">
+	<meta property="og:type" content="website"/>
 	<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.9.0/css/all.css" integrity="sha384-vlOMx0hKjUCl4WzuhIhSNZSm2yQCaf0mOU1hEDK/iztH3gU4v5NMmJln9273A6Jz" crossorigin="anonymous">
 	<link href="/static/css/main.css" rel="stylesheet" type="text/css">
 	<style>
