@@ -78,22 +78,22 @@ class ApiController extends \DraftMVC\DraftController
         if (isset($requestData['status'])) {
             $code->status = $requestData['status'];
         }
-        /* curl_setopt_array($ch = curl_init(), array(
-            CURLOPT_URL => "https://api.pushed.co/1/push",
+        curl_setopt_array($ch = curl_init(), array(
+            CURLOPT_URL => "https://api.pushback.io/v1/send ",
             CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: Bearer at_2OIfjk9uTSP1bLFOH4Aymg'
+            ),
             CURLOPT_POSTFIELDS => array(
-                "app_key" => "8sqKQhqMuQooIcQkpSyZ",
-                "app_secret" => "ucdXx9oMCzortCye1BLjZ9ynB1m1ypPpNJymOfTMvy6WpkT3XSnzdlvlY36O98Ma",
-                "target_type" => "app",
-                "content" => $code->internal_name . ' heeft zich ' . ($code->status === 1 ? 'aangemeld' : 'afgemeld') . '.',
-                "content_type" => "url",
-                "content_extra" => "https://onze-trouwdag.nl/CAPSKDHR",
+                "id" => "Channel_1149",
+                "title" => "Onze-Trouwdag",
+                "body" => ($code->internal_name ?: $code->name) . ' heeft zich ' . ($code->status === 1 ? 'aangemeld' : 'afgemeld') . '.',
             ),
             CURLOPT_SAFE_UPLOAD => true,
             CURLOPT_RETURNTRANSFER => true,
         ));
         curl_exec($ch);
-        curl_close($ch);*/
+        curl_close($ch);
         $code->save();
     }
 }
