@@ -2,7 +2,15 @@
 {% block content %}
 
 	<div class="container pt-4 pb-4">
-		<h2>Gasten</h2>
+
+		<div class="row mb-4">
+			<div class="col">
+				<h2>Gasten</h2>
+			</div>
+			<div class="col-auto mr-auto">
+				<a class="btn btn-primary" href="/admin/invitees/create">Toevoegen</a>
+			</div>
+		</div>
 		<ul class="nav justify-content-center">
 			<li class="nav-item">
 				<a class="nav-link {% if day == 0 %}disabled{% endif %}" href="/admin/invitees/">Toon alle gasten</a>
@@ -25,11 +33,7 @@
 					<th scope="col">Aanwezigheid</th>
 					<th scope="col">Type gast</th>
 					<th scope="col">Visits</th>
-					<th scope="col">
-						<a href="/admin/invitees/create">
-							<i class="fas fa-user-plus"></i>
-						</a>
-					</th>
+					<th scope="col"></th>
 				</tr>
 			</thead>
 			<tbody>
