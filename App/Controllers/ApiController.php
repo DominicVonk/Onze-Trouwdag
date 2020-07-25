@@ -78,22 +78,29 @@ class ApiController extends \DraftMVC\DraftController
         if (isset($requestData['status'])) {
             $code->status = $requestData['status'];
         }
-        curl_setopt_array($ch = curl_init(), array(
-            CURLOPT_URL => "https://api.pushback.io/v1/send_sync",
-            CURLOPT_POST => 1,
-            CURLOPT_USERPWD => 'at_2OIfjk9uTSP1bLFOH4Aymg' . ':' . '',
-            CURLOPT_POSTFIELDS => json_encode(array(
-                "id" => "Channel_1149",
-                "title" => "Onze-Trouwdag",
-                "body" => ($code->internal_name ?: $code->name) . ' heeft zich ' . ($code->status === 1 ? 'aangemeld' : 'afgemeld') . '.',
-            )),
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_HTTPHEADER => [
-                'Content-Type' => 'application/json'
-            ]
-        ));
-        curl_exec($ch);
+
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, 'https://api.pushback.io/v1/send');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(array(
+            "id" => "Channel_1149",
+            "title" => "Onze-Trouwdag",
+            "body" => ($code->internal_name ?: $code->name) . ' heeft zich ' . ($code->status === 1 ? 'aangemeld' : 'afgemeld') . '.',
+        )));
+        curl_setopt($ch, CURLOPT_USERPWD, 'at_2OIfjk9uTSP1bLFOH4Aymg' . ':' . '');
+
+        $headers = array();
+        $headers[] = 'Content-Type: application/json';
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+        $result = curl_exec($ch);
+        if (curl_errno($ch)) {
+            echo 'Error:' . curl_error($ch);
+        }
         curl_close($ch);
+
         $code->save();
     }
 }
