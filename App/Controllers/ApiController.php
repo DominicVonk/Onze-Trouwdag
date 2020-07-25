@@ -78,6 +78,7 @@ class ApiController extends \DraftMVC\DraftController
         if (isset($requestData['status'])) {
             $code->status = $requestData['status'];
         }
+        $code->save();
 
         $ch = curl_init();
 
@@ -87,7 +88,7 @@ class ApiController extends \DraftMVC\DraftController
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(array(
             "id" => "Channel_1149",
             "title" => "Onze-Trouwdag",
-            "body" => ($code->internal_name ?: $code->name) . ' heeft zich ' . ($code->status === 1 ? 'aangemeld' : 'afgemeld') . '.',
+            "body" => ($code->internal_name ?: $code->name) . ' heeft zich ' . ($code->status === 1 ? 'aangemeld' : 'afgemeld') . '.'
         )));
         curl_setopt($ch, CURLOPT_USERPWD, 'at_2OIfjk9uTSP1bLFOH4Aymg' . ':' . '');
 
@@ -100,7 +101,5 @@ class ApiController extends \DraftMVC\DraftController
             echo 'Error:' . curl_error($ch);
         }
         curl_close($ch);
-
-        $code->save();
     }
 }
