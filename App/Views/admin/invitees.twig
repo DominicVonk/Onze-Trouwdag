@@ -1,80 +1,95 @@
 {% extends 'admin/layout.twig' %}
 {% block content %}
 
-        <div class="container pt-4 pb-4">
-        <h2>Gasten</h2>
-<ul class="nav justify-content-center">
-  <li class="nav-item">
-    <a class="nav-link {% if day == 0 %}disabled{% endif %}" href="/admin/invitees/">Toon alle gasten</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link {% if day == 1 %}disabled{% endif %}" href="/admin/invitees/1">Toon avondgasten</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link {% if day == 2 %}disabled{% endif %}" href="/admin/invitees/2">Toon overdaggasten</a>
-  </li>
-  </ul>
-             
-            <table class="table table-striped table-bordered">
-                <thead>
-                    <tr>
-                        <th scope="col">Naam</th>
-                        <th scope="col">Code</th>
-                        <th scope="col">Volwassenen</th>
-                        <th scope="col">Kinderen</th>
-                        <th scope="col">Aanwezigheid</th>
-                        <th scope="col">Type gast</th>
-                        <th scope="col">Visits</th>
-                                <th scope="col">
-                                <a href="/admin/invitees/create"><i class="fas fa-user-plus"></i></a></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for code in codes %}
-                        <tr>
-                            <td>{{ code.internal_name }}</td>
-                            <td>{{ code.code }}</td>
-                            <td>{{ code.adults }}</td>
-                            <td>{{ code.children }}</td>
-                            <td>
-                                {% if code.status == 1 %}
-                                    <i class="fas fa-check text-success">
-                                {% elseif code.status == 2 %}
-                                    <i class="fas fa-times text-danger">
-                                {% elseif code.status == 0 %}
-                                    <i class="fal fa-minus">
-                                {% endif %}
+	<div class="container pt-4 pb-4">
+		<h2>Gasten</h2>
+		<ul class="nav justify-content-center">
+			<li class="nav-item">
+				<a class="nav-link {% if day == 0 %}disabled{% endif %}" href="/admin/invitees/">Toon alle gasten</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link {% if day == 1 %}disabled{% endif %}" href="/admin/invitees/1">Toon avondgasten</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link {% if day == 2 %}disabled{% endif %}" href="/admin/invitees/2">Toon overdaggasten</a>
+			</li>
+		</ul>
 
-                            </td>
-                            <td>
-                                {% if code.type == 0 %}
-                                    Avondgast
-                                {% elseif code.type == 2 %}
-                                    Middaggast
-                                {% elseif code.type == 1 %}
-                                    Daggast
-                                {% endif %}
+		<table class="table table-striped table-bordered">
+			<thead>
+				<tr>
+					<th scope="col">Naam</th>
+					<th scope="col">Code</th>
+					<th scope="col">Volwassenen</th>
+					<th scope="col">Kinderen</th>
+					<th scope="col">Aanwezigheid</th>
+					<th scope="col">Type gast</th>
+					<th scope="col">Visits</th>
+					<th scope="col">
+						<a href="/admin/invitees/create">
+							<i class="fas fa-user-plus"></i>
+						</a>
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for code in codes %}
+					<tr>
+						<td>
+							{% if code.internal_name %}
+								{{ code.internal_name }}
+							{% else %}
+								{{ code.name }}
+							{% endif %}
+						</td>
+						<td>{{ code.code }}</td>
+						<td>{{ code.adults }}</td>
+						<td>{{ code.children }}</td>
+						<td>
+							{% if code.status == 1 %}
+								<i class="fas fa-check text-success">
+								{% elseif code.status == 2 %}
+									<i class="fas fa-times text-danger">
+									{% elseif code.status == 0 %}
+										<i class="fal fa-minus">
+										{% endif %}
 
-                            </td>
-                            <td>{{ code.visits }}</td>
-                                <td>
-                                <a href="/admin/invitees/edit/{{code.id}}"><i class="fas fa-user-edit"></i></a></td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td>Totaal ({{codes|length}})</td>
-                            <td>&nbsp;</td>
-                            <td>{{ adults }}</td>
-                            <td>{{ children }}</td>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
+									</td>
+									<td>
+										{% if code.type == 0 %}
+											Avondgast
+										{% elseif code.type == 2 %}
+											Middaggast
+										{% elseif code.type == 1 %}
+											Daggast
+										{% endif %}
+
+									</td>
+									<td>{{ code.visits }}</td>
+									<td>
+										<a href="/admin/invitees/edit/{{code.id}}">
+											<i class="fas fa-user-edit"></i>
+										</a>
+									</td>
+								</tr>
+							{% endfor %}
+						</td>
+					</tr>
+				</tbody>
+			</tbody>
+			<tfoot>
+				<tr>
+					<td>Totaal ({{codes|length}})</td>
+					<td>&nbsp;</td>
+					<td>{{ adults }}</td>
+					<td>{{ children }}</td>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+				</tr>
+			</tfoot>
+		</table>
+	</div>
 
 {% endblock %}
