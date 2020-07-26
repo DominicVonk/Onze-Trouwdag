@@ -208,10 +208,11 @@ window.aanwezigheid = async function (force) {
   chat.write("En kom je met kinderen boven de 12 jaar?");
   volwassene += await chat.options([
     ["Nee", 0],
-    [1, 2],
-    [2, 3],
-    [3, 4],
-    [4, 5],
+    [1, 1],
+    [2, 2],
+    [3, 3],
+    [4, 4],
+    [5, 5],
   ]);
   chat.write("En kom je met kinderen onder de 12 jaar?");
   let kinderen = await chat.options([
@@ -220,6 +221,7 @@ window.aanwezigheid = async function (force) {
     [2, 2],
     [3, 3],
     [4, 4],
+    [5, 5],
   ]);
   var jullieofje = parseInt(volwassene) + parseInt(kinderen) > 1
     ? "jullie komen"
