@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "build": "webpack -p --config build/webpack.config.js --display-error-details",
+    "build": "NODE_OPTIONS=--openssl-legacy-provider webpack -p --config build/webpack.config.js --display-error-details",
     "watch": "webpack -d --watch --config build/webpack.config.js --display-error-details"
   },
   "author": "Dominic Vonk",
