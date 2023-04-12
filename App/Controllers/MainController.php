@@ -82,9 +82,9 @@ class MainController extends \DraftMVC\DraftController
         }, ['is_safe' => ['html']]);
         $this->view->account = $code->account->dump();
         $this->view->account['program_text'] = str_replace('[gallery]', $this->gallery($code->account, 'program'), $this->view->account['program_text']);
-        $this->view->formsubscription = $code->account->enddate >= date('Y-m-d');
+        $this->view->formsubscription = true;//$code->account->enddate >= date('Y-m-d');
 
-        $this->view->formmaybeopen = $code->account->weddingdate > date('Y-m-d') ? true : false;
+        $this->view->formmaybeopen = true;//$code->account->weddingdate > date('Y-m-d') ? true : false;
         if (substr($code->account->enddate, 0, 4) > date('Y')) {
             $this->view->enddate =  strftime('%e %B %Y',  strtotime(($code->account->enddate)));
         } else {
