@@ -14,9 +14,8 @@ class MainController extends \DraftMVC\DraftController
         foreach ($accounts as $account) {
             if ($account->url === $_SERVER['HTTP_HOST']) {
                 $account = $account->dump();
-                $account['weddingdate'] = strftime('%e %B %Y', strtotime($account['weddingdate']));
-                var_dump($account['weddingdate']);
                 $account['infuture'] = $account['weddingdate'] > date('Y-m-d') ? true : false;
+                $account['weddingdate'] = strftime('%e %B %Y', strtotime($account['weddingdate']));
                 $this->view->account = $account;
             }
         }
